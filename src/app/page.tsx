@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MapPin, Bed, Bath, Car, Wifi, AirVent, Shield, Phone, Mail, Euro, Waves, Dumbbell, TreePine, Home, ChevronLeft, ChevronRight, Download, FileText, Camera, Play, Sunrise, Eye, Scale } from "lucide-react"
+import Footer from "@/components/ui/footer"
+import { MapPin, Bed, Bath, Car, Wifi, AirVent, Shield, Phone, Mail, Euro, Waves, Dumbbell, TreePine, Home, ChevronLeft, ChevronRight, Download, FileText, Camera, Play, Sunrise, Eye, Scale, Building } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export default function PropertyRental() {
   const propertyImages = [
+    "/rainbow.jpeg",
     "/WhatsApp Image 2025-05-27 at 18.43.22.jpeg",
     "/WhatsApp Image 2025-05-27 at 18.43.22 (1).jpeg",
     "/WhatsApp Image 2025-05-27 at 18.43.22 (2).jpeg",
@@ -28,6 +30,14 @@ export default function PropertyRental() {
 
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + propertyImages.length) % propertyImages.length)
+  }
+
+  // Scroll to contact section function
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact-section')
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   // Auto-advance slideshow
@@ -80,29 +90,56 @@ export default function PropertyRental() {
           <div className="absolute inset-0 bg-black/20" />
         </div>
         
-        {/* Navigation Buttons */}
+        {/* Navigation Buttons - Fixed for mobile */}
         <button
           onClick={() => handleManualNavigation(prevImage)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black rounded-full p-3 shadow-lg transition-all duration-200 z-10"
+          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black rounded-full p-3 md:p-3 shadow-lg transition-all duration-200 z-50 touch-manipulation select-none"
+          style={{ 
+            minWidth: '48px', 
+            minHeight: '48px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'auto'
+          }}
+          type="button"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
         </button>
         <button
           onClick={() => handleManualNavigation(nextImage)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black rounded-full p-3 shadow-lg transition-all duration-200 z-10"
+          className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black rounded-full p-3 md:p-3 shadow-lg transition-all duration-200 z-50 touch-manipulation select-none"
+          style={{ 
+            minWidth: '48px', 
+            minHeight: '48px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'auto'
+          }}
+          type="button"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
         </button>
         
         {/* Image Indicators */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-50">
           {propertyImages.map((_, index) => (
             <button
               key={index}
               onClick={() => handleManualNavigation(() => setCurrentImageIndex(index))}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
+              className={`w-1 h-1 rounded-full transition-all duration-200 touch-manipulation select-none ${
                 index === currentImageIndex ? 'bg-white' : 'bg-white/50'
               }`}
+              style={{
+                minWidth: '24px',
+                minHeight: '24px',
+                pointerEvents: 'auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              type="button"
             />
           ))}
         </div>
@@ -126,7 +163,7 @@ export default function PropertyRental() {
                 <span className="text-sm">/month</span>
               </div>
             </div>
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6" onClick={scrollToContact}>
               Contact Agent
             </Button>
           </div>
@@ -783,7 +820,7 @@ export default function PropertyRental() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-6" onClick={scrollToContact}>
                   <Mail className="h-5 w-5 mr-2" />
                   Contact Agent
                 </Button>
@@ -1047,8 +1084,97 @@ export default function PropertyRental() {
         </div>
       </div>
 
+      {/* Related Properties Section */}
+      <div className="bg-gradient-to-b from-white to-slate-50 py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Explore Our Other Premium Properties</h2>
+            <p className="text-lg text-slate-600">Discover more exceptional rental opportunities in Luxembourg</p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300">
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Property Image */}
+                <div className="relative aspect-video md:aspect-square">
+                  <Image
+                    src="/liberte/living.png"
+                    alt="Avenue de la Liberté - Historic furnished apartment near train station"
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute top-4 left-4">
+                    <Badge className="bg-green-600 text-white">
+                      Historic Charm
+                    </Badge>
+                  </div>
+                  <div className="absolute bottom-4 right-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm">
+                    Near Train Station
+                  </div>
+                </div>
+                
+                {/* Property Details */}
+                <div className="p-8">
+                  <div className="mb-4">
+                    <h3 className="text-2xl font-bold mb-2">Avenue de la Liberté</h3>
+                    <p className="text-slate-600 flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      57 Avenue de la Liberté, Luxembourg-Gare
+                    </p>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">€1,550</div>
+                    <div className="text-slate-600">per month</div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="flex items-center gap-2">
+                      <Bed className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm">1 Bedroom</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Bath className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm">1 Bathroom</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Home className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm">Cellar</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Building className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm">≈ 38 m²</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <p className="text-slate-700 text-sm leading-relaxed">
+                      Beautifully renovated historic furnished studio near Luxembourg train station. 
+                      Perfect location with excellent transport links, just 250m from the main station and city center.
+                    </p>
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <Button className="flex-1 bg-blue-600 hover:bg-blue-700" asChild>
+                      <a href="/liberte">
+                        View Property
+                      </a>
+                    </Button>
+                    <Button variant="outline" className="flex-1" asChild>
+                      <a href="mailto:ted@staggs.lu">
+                        Contact Agent
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+
       {/* Call to Action Section */}
-      <div className="bg-slate-900 text-white py-16">
+      <div id="contact-section" className="bg-slate-900 text-white py-16">
         <div className="max-w-4xl mx-auto text-center px-6">
           <h2 className="text-4xl font-bold mb-6">Ready to Make This Home?</h2>
           <p className="text-xl mb-8 text-slate-300">
@@ -1072,11 +1198,7 @@ export default function PropertyRental() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-100 py-8">
-        <div className="max-w-7xl mx-auto px-6 text-center text-slate-600">
-          <p>&copy; 2025 Ted Staggs Real Estate. All rights reserved. | Luxury rentals in Luxembourg</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
