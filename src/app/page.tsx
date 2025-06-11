@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Footer from "@/components/ui/footer"
+import ServiceBanner from "@/components/ui/service"
 import { MapPin, Bed, Bath, Car, Wifi, AirVent, Shield, Phone, Mail, Euro, Waves, Dumbbell, TreePine, Home, ChevronLeft, ChevronRight, Download, FileText, Camera, Play, Sunrise, Eye, Scale, Building } from "lucide-react"
 import { useState, useEffect } from "react"
 
@@ -1196,6 +1197,9 @@ export default function PropertyRental() {
           </div>
         </div>
       </div>
+
+      {/* Service Banner */}
+      <ServiceBanner />
 
       {/* Footer */}
       <Footer />
