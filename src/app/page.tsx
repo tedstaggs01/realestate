@@ -901,6 +901,21 @@ export default function PropertyRental() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Purchase Inquiry */}
+            <Card className="border-slate-200">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm text-slate-600">Purchase Inquiry</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-xs text-slate-500 mb-2">
+                  Interested in buying this property?
+                </p>
+                <p className="text-xs text-slate-600">
+                  Price is negotiable - only serious offers above <span className="font-semibold">€1,400,000</span> considered.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
