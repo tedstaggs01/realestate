@@ -842,12 +842,12 @@ export default function PropertyRental() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-semibold text-lg">Ted Staggs</div>
+                    <div className="font-semibold text-lg">Guillaume Bisdorf</div>
                     <div className="text-slate-600">Licensed Real Estate Agent</div>
                     <div className="text-sm text-slate-500">Dippach, Luxembourg</div>
                     <div className="flex items-center gap-1 mt-1">
-                      <div className="flex text-yellow-400 text-sm">★★★★★</div>
-                      <span className="text-sm text-slate-600 ml-1">(4.9/5)</span>
+                      <div className="flex text-yellow-400 text-sm">★</div>
+                      <span className="text-sm text-slate-600 ml-1">(0.1/5)</span>
                     </div>
                   </div>
                 </div>
