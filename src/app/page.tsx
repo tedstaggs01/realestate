@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Footer from "@/components/ui/footer"
-import ServiceBanner from "@/components/ui/service"
-import { MapPin, Bed, Bath, Search, Filter, Building } from "lucide-react"
+import { MapPin, Bed, Bath, Search, Filter, Building, X } from "lucide-react"
 import Link from "next/link"
 
 // Set your Mapbox access token
@@ -72,13 +71,18 @@ const properties: Property[] = [
 
 export default function HomePage() {
   const mapContainer = useRef<HTMLDivElement>(null)
+  const mobileMapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<mapboxgl.Map | null>(null)
+  const mobileMap = useRef<mapboxgl.Map | null>(null)
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [propertyCategory, setPropertyCategory] = useState<'all' | 'rent' | 'sale'>('all')
   const [priceRange, setPriceRange] = useState<string>('all')
   const [propertyType, setPropertyType] = useState<string>('all')
   const [filteredProperties, setFilteredProperties] = useState<Property[]>(properties)
+  const [showFilters, setShowFilters] = useState(false)
+  const [isMapView, setIsMapView] = useState(false)
+  const [showMobilePropertyDetails, setShowMobilePropertyDetails] = useState(false)
 
   // Filter properties based on search and filters
   useEffect(() => {
@@ -125,7 +129,7 @@ export default function HomePage() {
     setFilteredProperties(filtered)
   }, [searchQuery, propertyCategory, priceRange, propertyType])
 
-  // Initialize map
+  // Initialize desktop map
   useEffect(() => {
     if (map.current) return
 
@@ -143,9 +147,39 @@ export default function HomePage() {
     }
   }, [])
 
-  // Update map markers when filtered properties change
+  // Initialize mobile map when switching to map view
   useEffect(() => {
-    if (!map.current) return
+    if (!isMapView) {
+      // Cleanup mobile map when switching away from map view
+      if (mobileMap.current) {
+        mobileMap.current.remove()
+        mobileMap.current = null
+      }
+      return
+    }
+
+    if (mobileMap.current) return
+
+    if (mobileMapContainer.current) {
+      mobileMap.current = new mapboxgl.Map({
+        container: mobileMapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [6.1308, 49.5915],
+        zoom: 13
+      })
+
+      // Add navigation controls
+      mobileMap.current.addControl(new mapboxgl.NavigationControl(), 'top-right')
+      mobileMap.current.addControl(new mapboxgl.FullscreenControl(), 'top-right')
+
+      // Update markers for the new mobile map
+      updateMapMarkers(mobileMap.current)
+    }
+  }, [isMapView])
+
+  // Cleanup function to define updateMapMarkers outside useEffect
+  const updateMapMarkers = (mapInstance: mapboxgl.Map) => {
+    if (!mapInstance) return
 
     // Clear existing markers
     const markers = document.querySelectorAll('.custom-marker')
@@ -221,18 +255,177 @@ export default function HomePage() {
       new mapboxgl.Marker(markerElement)
         .setLngLat(property.coordinates)
         .setPopup(popup)
-        .addTo(map.current!)
+        .addTo(mapInstance)
 
       markerElement.addEventListener('click', () => {
         setSelectedProperty(property)
+        setShowMobilePropertyDetails(true)
       })
     })
+  }
+
+  // Update map markers when filtered properties change
+  useEffect(() => {
+    // Update both desktop and mobile maps
+    if (map.current) updateMapMarkers(map.current)
+    if (mobileMap.current) updateMapMarkers(mobileMap.current)
   }, [filteredProperties])
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header with Search and Filters */}
-      <div className="bg-white shadow-sm border-b">
+      {/* Mobile Header */}
+      <div className="lg:hidden bg-white shadow-sm border-b sticky top-0 z-40">
+        <div className="px-4 py-3">
+          {/* Brand and Toggle */}
+          <div className="flex items-center justify-between mb-3">
+            <h1 className="text-xl font-bold text-slate-800">Luxembourg Real Estate</h1>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-1"
+              >
+                <Filter className="h-4 w-4" />
+                Filters
+              </Button>
+            </div>
+          </div>
+
+          {/* Mobile Search */}
+          <div className="relative mb-3">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <input
+              placeholder="Search properties..."
+              className="w-full pl-10 pr-4 py-2 text-sm border border-slate-200 focus:border-blue-500 rounded-lg outline-none"
+              value={searchQuery}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {/* Mobile Category Toggle */}
+          <div className="flex bg-slate-100 rounded-lg p-1 mb-3">
+            <button
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${propertyCategory === 'rent' ? 'bg-blue-600 text-white' : 'text-slate-600'}`}
+              onClick={() => setPropertyCategory('rent')}
+            >
+              Rent
+            </button>
+            <button
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${propertyCategory === 'sale' ? 'bg-green-600 text-white' : 'text-slate-600'}`}
+              onClick={() => setPropertyCategory('sale')}
+            >
+              Sale
+            </button>
+            <button
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${propertyCategory === 'all' ? 'bg-slate-600 text-white' : 'text-slate-600'}`}
+              onClick={() => setPropertyCategory('all')}
+            >
+              All
+            </button>
+          </div>
+
+          {/* Map/List Toggle */}
+          <div className="flex bg-slate-100 rounded-lg p-1">
+            <button
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${!isMapView ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-600'}`}
+              onClick={() => setIsMapView(false)}
+            >
+              List
+            </button>
+            <button
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium ${isMapView ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-600'}`}
+              onClick={() => setIsMapView(true)}
+            >
+              Map
+            </button>
+          </div>
+
+          {/* Results Count */}
+          <div className="text-center text-sm text-slate-600 mt-2">
+            {filteredProperties.length} properties found
+          </div>
+        </div>
+
+        {/* Mobile Filters Panel */}
+        {showFilters && (
+          <div className="border-t bg-white p-4 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold">Filters</h3>
+              <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Price Range</label>
+                <select 
+                  value={priceRange} 
+                  onChange={(e) => setPriceRange(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All Prices</option>
+                  {propertyCategory === 'rent' ? (
+                    <>
+                      <option value="under-2000">Under €2,000/month</option>
+                      <option value="2000-3000">€2,000 - €3,000/month</option>
+                      <option value="over-3000">Over €3,000/month</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="under-2000">Under €500,000</option>
+                      <option value="2000-3000">€500,000 - €750,000</option>
+                      <option value="over-3000">Over €750,000</option>
+                    </>
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Property Type</label>
+                <select 
+                  value={propertyType} 
+                  onChange={(e) => setPropertyType(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="all">All Types</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="studio">Studio</option>
+                  <option value="penthouse">Penthouse</option>
+                  <option value="house">House</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex-1"
+                onClick={() => {
+                  setPriceRange('all')
+                  setPropertyType('all')
+                  setPropertyCategory('all')
+                  setSearchQuery('')
+                }}
+              >
+                Clear All
+              </Button>
+              <Button 
+                size="sm" 
+                className="flex-1"
+                onClick={() => setShowFilters(false)}
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Header */}
+      <div className="hidden lg:block bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-6">
           {/* Brand Header */}
           <div className="text-center mb-6">
@@ -320,8 +513,202 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Main Content: 50% Map, 50% Listings */}
-      <div className="flex h-[calc(100vh-250px)]">
+      {/* Mobile Content */}
+      <div className="lg:hidden">
+        {isMapView ? (
+          /* Mobile Map View */
+          <div className="relative h-[calc(100vh-140px)]">
+            <div 
+              ref={mobileMapContainer} 
+              className="w-full h-full"
+            />
+            {/* Map Legend */}
+            <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-3 z-10">
+              <h3 className="font-semibold text-xs mb-2">Legend</h3>
+              <div className="space-y-1 text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span>Rent</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span>Sale</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Property Details Bottom Sheet */}
+            {showMobilePropertyDetails && selectedProperty && (
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-2xl z-30 max-h-[50vh] overflow-y-auto">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-bold text-lg">{selectedProperty.title}</h3>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setShowMobilePropertyDetails(false)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`text-xl font-bold ${selectedProperty.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
+                      €{selectedProperty.price.toLocaleString()}
+                    </span>
+                    {selectedProperty.category === 'rent' && <span className="text-slate-600">/month</span>}
+                  </div>
+
+                  <p className="text-slate-600 text-sm mb-3 flex items-center gap-1">
+                    <MapPin className="h-3 w-3" />
+                    {selectedProperty.address}
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-4 mb-3 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Bed className="h-3 w-3" />
+                      <span>{selectedProperty.bedrooms} bed</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Bath className="h-3 w-3" />
+                      <span>{selectedProperty.bathrooms} bath</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Building className="h-3 w-3" />
+                      <span>{selectedProperty.area}m²</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button size="sm" className="flex-1" asChild>
+                      <Link href={selectedProperty.link}>
+                        View Details
+                      </Link>
+                    </Button>
+                    <Button size="sm" variant="outline" asChild>
+                      <a href="mailto:Ted@staggs.lu">
+                        Contact
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Mobile List View */
+          <div className="overflow-y-auto">
+            <div className="p-4 space-y-4">
+              {filteredProperties.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-slate-400 mb-4">
+                    <Filter className="h-12 w-12 mx-auto" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-600 mb-2">No properties found</h3>
+                  <p className="text-slate-500">Try adjusting your search criteria or filters</p>
+                </div>
+              ) : (
+                filteredProperties.map((property) => (
+                  <Card 
+                    key={property.id} 
+                    className="cursor-pointer transition-all duration-200 hover:shadow-lg"
+                    onClick={() => setSelectedProperty(property)}
+                  >
+                    {/* Mobile Property Card */}
+                    <div>
+                      {/* Property Image */}
+                      <div className="relative w-full h-48">
+                        <Image
+                          src={property.image}
+                          alt={property.title}
+                          fill
+                          className="object-cover rounded-t-lg"
+                        />
+                        <div className="absolute top-3 left-3">
+                          <Badge 
+                            variant={property.status === 'Available' ? 'default' : 'destructive'}
+                            className={property.status === 'Available' ? 'bg-green-600' : 'bg-red-600'}
+                          >
+                            {property.status}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-3 right-3">
+                          <Badge 
+                            variant="secondary"
+                            className={property.category === 'sale' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}
+                          >
+                            {property.category === 'sale' ? 'For Sale' : 'For Rent'}
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      {/* Property Details */}
+                      <CardContent className="p-4">
+                        <div className="mb-2">
+                          <h3 className="font-bold text-lg mb-1">{property.title}</h3>
+                          <p className="text-slate-600 text-sm flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            {property.address}
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className={`text-2xl font-bold ${property.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
+                            €{property.price.toLocaleString()}
+                          </span>
+                          {property.category === 'rent' && <span className="text-slate-600">/month</span>}
+                        </div>
+                        
+                        <div className="grid grid-cols-4 gap-2 mb-3 text-sm">
+                          <div className="flex items-center gap-1">
+                            <Bed className="h-3 w-3" />
+                            <span>{property.bedrooms}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Bath className="h-3 w-3" />
+                            <span>{property.bathrooms}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Building className="h-3 w-3" />
+                            <span>{property.area}m²</span>
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {property.energyClass}
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          {property.features.slice(0, 2).map((feature, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {feature}
+                            </Badge>
+                          ))}
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <Button size="sm" className="flex-1" asChild>
+                            <Link href={property.link}>
+                              View Details
+                            </Link>
+                          </Button>
+                          <Button size="sm" variant="outline" asChild>
+                            <a href="mailto:Ted@staggs.lu">
+                              Contact
+                            </a>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </div>
+                  </Card>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Content: 50% Map, 50% Listings */}
+      <div className="hidden lg:flex h-[calc(100vh-250px)]">
         {/* Map Section - 50% */}
         <div className="w-1/2 relative">
           <div 
@@ -454,6 +841,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
       {/* Footer */}
       <Footer />
     </div>
