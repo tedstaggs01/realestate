@@ -444,11 +444,11 @@ export default function PropertyRental() {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src="/agent-photo.jpg" alt="Gregory Muller" />
+                    <AvatarImage src="/agent-photo.jpg" alt="Ted Staggs" />
                     <AvatarFallback className="bg-blue-100 text-blue-600 text-lg font-semibold">GM</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className="font-semibold text-lg">Gregory Muller</h3>
+                    <h3 className="font-semibold text-lg">Ted Staggs</h3>
                     <p className="text-slate-600">Senior Property Consultant</p>
                     <div className="flex items-center gap-1 mt-1">
                       <div className="flex">
@@ -472,7 +472,7 @@ export default function PropertyRental() {
                   <Button variant="outline" className="w-full" size="lg" asChild>
                     <a href="mailto:gregory.muller@staggs.lu" className="flex items-center gap-2">
                       <Mail className="h-4 w-4" />
-                      gregory.muller@staggs.lu
+                      ted@staggs.lu
                     </a>
                   </Button>
                 </div>

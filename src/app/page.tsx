@@ -419,10 +419,10 @@ export default function HomePage() {
                         <span>{language.name}</span>
                       </button>
                     ))}
-                  </div>
+                      </div>
                 )}
-              </div>
-              
+                  </div>
+
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/login">Login</Link>
               </Button>
@@ -438,8 +438,8 @@ export default function HomePage() {
                 <Filter className="h-4 w-4" />
                 Filters
               </Button>
-            </div>
-          </div>
+                  </div>
+                </div>
 
           {/* Mobile Search */}
           <div className="relative mb-3">
@@ -450,7 +450,7 @@ export default function HomePage() {
               value={searchQuery}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
             />
-          </div>
+                     </div>
 
           {/* Mobile Category Toggle */}
           <div className="flex bg-slate-100 rounded-lg p-1 mb-3">
@@ -472,7 +472,7 @@ export default function HomePage() {
             >
               All
             </button>
-          </div>
+                   </div>
 
           {/* Map/List Toggle */}
           <div className="flex bg-slate-100 rounded-lg p-1">
@@ -488,13 +488,13 @@ export default function HomePage() {
             >
               Map
             </button>
-          </div>
+                     </div>
 
           {/* Results Count */}
           <div className="text-center text-sm text-slate-600 mt-2">
             {filteredProperties.length} properties found
-          </div>
-        </div>
+                   </div>
+                 </div>
 
         {/* Mobile Filters Panel */}
         {showFilters && (
@@ -504,7 +504,7 @@ export default function HomePage() {
               <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
                 <X className="h-4 w-4" />
               </Button>
-            </div>
+                      </div>
             
             <div className="grid grid-cols-1 gap-4">
               <div>
@@ -529,7 +529,7 @@ export default function HomePage() {
                     </>
                   )}
                 </select>
-              </div>
+                      </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Property Type</label>
@@ -544,9 +544,9 @@ export default function HomePage() {
                   <option value="penthouse">Penthouse</option>
                   <option value="house">House</option>
                 </select>
-              </div>
-            </div>
-
+                    </div>
+                  </div>
+                  
             <div className="flex gap-2 pt-2">
               <Button 
                 variant="outline" 
@@ -568,10 +568,10 @@ export default function HomePage() {
               >
                 Apply
               </Button>
-            </div>
-          </div>
+                      </div>
+                      </div>
         )}
-      </div>
+                      </div>
       
       {/* Desktop Header */}
       <div className="hidden lg:block bg-white shadow-sm border-b">
@@ -608,10 +608,10 @@ export default function HomePage() {
                       <span className="font-medium">{language.name}</span>
                     </button>
                   ))}
-                </div>
+                  </div>
               )}
-            </div>
-            
+                </div>
+
             <div className="flex items-center gap-3">
               <Button variant="ghost" asChild>
                 <Link href="/login">Login</Link>
@@ -619,14 +619,14 @@ export default function HomePage() {
               <Button asChild>
                 <Link href="/register">Sign Up</Link>
               </Button>
-            </div>
-          </div>
+                    </div>
+                  </div>
 
           {/* Brand Header */}
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-slate-800 mb-2">Luxembourg Real Estate</h1>
             <p className="text-slate-600">Find your perfect property with our interactive map search</p>
-          </div>
+                </div>
 
           {/* Main Search Bar */}
           <div className="mb-6">
@@ -638,9 +638,9 @@ export default function HomePage() {
                 value={searchQuery}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
               />
-            </div>
-          </div>
-
+                  </div>
+                </div>
+                
           {/* Filter Controls */}
           <div className="flex flex-wrap gap-4 items-center justify-center">
             {/* Property Category */}
@@ -663,7 +663,7 @@ export default function HomePage() {
               >
                 All
               </button>
-            </div>
+                </div>
 
             {/* Price Range */}
             <select 
@@ -703,11 +703,11 @@ export default function HomePage() {
             {/* Results Count */}
             <div className="text-slate-600 text-sm">
               {filteredProperties.length} properties found
-            </div>
-          </div>
-        </div>
-      </div>
-      
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  
       {/* Mobile Content */}
       <div className="lg:hidden">
         {isMapView ? (
@@ -724,13 +724,13 @@ export default function HomePage() {
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                   <span>Rent</span>
-                </div>
+                      </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   <span>Sale</span>
-                </div>
-              </div>
-            </div>
+                      </div>
+                      </div>
+                      </div>
 
             {/* Mobile Property Details Bottom Sheet */}
             {showMobilePropertyDetails && selectedProperty && (
@@ -745,14 +745,14 @@ export default function HomePage() {
                     >
                       <X className="h-4 w-4" />
                     </Button>
-                  </div>
-                  
+                </div>
+                
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`text-xl font-bold ${selectedProperty.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
                       €{selectedProperty.price.toLocaleString()}
                     </span>
                     {selectedProperty.category === 'rent' && <span className="text-slate-600">/month</span>}
-                  </div>
+                </div>
 
                   <p className="text-slate-600 text-sm mb-3 flex items-center gap-1">
                     <MapPin className="h-3 w-3" />
@@ -763,7 +763,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-1">
                       <Bed className="h-3 w-3" />
                       <span>{selectedProperty.bedrooms} bed</span>
-                    </div>
+                      </div>
                     <div className="flex items-center gap-1">
                       <Bath className="h-3 w-3" />
                       <span>{selectedProperty.bathrooms} bath</span>
@@ -771,9 +771,9 @@ export default function HomePage() {
                     <div className="flex items-center gap-1">
                       <Building className="h-3 w-3" />
                       <span>{selectedProperty.area}m²</span>
+                      </div>
                     </div>
-                  </div>
-                  
+                    
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" asChild>
                       <Link href={selectedProperty.link}>
@@ -785,11 +785,11 @@ export default function HomePage() {
                         Contact
                       </a>
                     </Button>
-                  </div>
-                </div>
-              </div>
+                        </div>
+                        </div>
+                        </div>
             )}
-          </div>
+                        </div>
         ) : (
           /* Mobile List View */
           <div className="overflow-y-auto">
@@ -798,10 +798,10 @@ export default function HomePage() {
                 <div className="text-center py-12">
                   <div className="text-slate-400 mb-4">
                     <Filter className="h-12 w-12 mx-auto" />
-                  </div>
+                        </div>
                   <h3 className="text-lg font-semibold text-slate-600 mb-2">No properties found</h3>
                   <p className="text-slate-500">Try adjusting your search criteria or filters</p>
-                </div>
+                      </div>
               ) : (
                 filteredProperties.map((property) => (
                   <Card 
@@ -826,7 +826,7 @@ export default function HomePage() {
                           >
                             {property.status}
                           </Badge>
-                        </div>
+                    </div>
                         <div className="absolute top-3 right-3">
                           <Badge 
                             variant="secondary"
@@ -834,8 +834,8 @@ export default function HomePage() {
                           >
                             {property.category === 'sale' ? 'For Sale' : 'For Rent'}
                           </Badge>
-                        </div>
-                      </div>
+                  </div>
+                    </div>
                       
                       {/* Property Details */}
                       <CardContent className="p-4">
@@ -845,60 +845,60 @@ export default function HomePage() {
                             <MapPin className="h-3 w-3" />
                             {property.address}
                           </p>
-                        </div>
+          </div>
 
                         <div className="flex items-center gap-2 mb-3">
                           <span className={`text-2xl font-bold ${property.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
                             €{property.price.toLocaleString()}
                           </span>
                           {property.category === 'rent' && <span className="text-slate-600">/month</span>}
-                        </div>
-                        
+                </div>
+                
                         <div className="grid grid-cols-4 gap-2 mb-3 text-sm">
                           <div className="flex items-center gap-1">
                             <Bed className="h-3 w-3" />
                             <span>{property.bedrooms}</span>
-                          </div>
+                  </div>
                           <div className="flex items-center gap-1">
                             <Bath className="h-3 w-3" />
                             <span>{property.bathrooms}</span>
-                          </div>
+                  </div>
                           <div className="flex items-center gap-1">
                             <Building className="h-3 w-3" />
                             <span>{property.area}m²</span>
-                          </div>
+                  </div>
                           <div className="text-xs text-slate-500">
                             {property.energyClass}
-                          </div>
-                        </div>
-                        
+                  </div>
+                </div>
+                
                         <div className="flex flex-wrap gap-1 mb-3">
                           {property.features.slice(0, 2).map((feature, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
                               {feature}
                             </Badge>
                           ))}
-                        </div>
-                        
+                </div>
+                
                         <div className="flex gap-2">
                           <Button size="sm" className="flex-1" asChild>
                             <Link href={property.link}>
                               View Details
                             </Link>
-                          </Button>
+                </Button>
                           <Button size="sm" variant="outline" asChild>
                             <a href="mailto:Ted@staggs.lu">
                               Contact
-                            </a>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </div>
-                  </Card>
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+                </div>
+            </Card>
                 ))
               )}
-            </div>
           </div>
+        </div>
         )}
       </div>
 
@@ -917,14 +917,14 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
                 <span>For Rent</span>
-              </div>
+                  </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-green-500 rounded-full"></div>
                 <span>For Sale</span>
+                </div>
               </div>
-            </div>
+                  </div>
           </div>
-        </div>
 
         {/* Listings Section - 50% */}
         <div className="w-1/2 overflow-y-auto bg-slate-50">
@@ -933,10 +933,10 @@ export default function HomePage() {
               <div className="text-center py-12">
                 <div className="text-slate-400 mb-4">
                   <Filter className="h-12 w-12 mx-auto" />
-                </div>
+            </div>
                 <h3 className="text-lg font-semibold text-slate-600 mb-2">No properties found</h3>
                 <p className="text-slate-500">Try adjusting your search criteria or filters</p>
-              </div>
+            </div>
             ) : (
               <div className="grid grid-cols-2 gap-4">
                 {filteredProperties.map((property) => (
@@ -950,7 +950,7 @@ export default function HomePage() {
                       <div>
                         {/* Property Image */}
                         <div className="relative w-full h-24">
-                          <Image
+              <Image
                             src={property.image}
                             alt={property.title}
                             fill
@@ -963,9 +963,9 @@ export default function HomePage() {
                             >
                               {property.category === 'sale' ? 'Sale' : 'Rent'}
                             </Badge>
-                          </div>
-                        </div>
-                        
+                  </div>
+                </div>
+                
                         {/* Property Details */}
                         <div className="p-2">
                           <div className="mb-1">
@@ -974,35 +974,35 @@ export default function HomePage() {
                               <MapPin className="h-2 w-2 flex-shrink-0" />
                               {property.address}
                             </p>
-                          </div>
+                  </div>
                           
                           <div className="flex items-center justify-between mb-1">
                             <span className={`text-sm font-bold ${property.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
                               €{property.price.toLocaleString()}
                             </span>
                             {property.category === 'rent' && <span className="text-slate-600 text-xs">/mo</span>}
-                          </div>
-                          
+            </div>
+            
                           <div className="grid grid-cols-3 gap-1 text-xs">
                             <div className="flex items-center gap-1">
                               <Bed className="h-2 w-2" />
                               <span>{property.bedrooms}</span>
-                            </div>
+              </div>
                             <div className="flex items-center gap-1">
                               <Bath className="h-2 w-2" />
                               <span>{property.bathrooms}</span>
-                            </div>
+            </div>
                             <div className="flex items-center gap-1">
                               <Building className="h-2 w-2" />
                               <span>{property.area}m²</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+              </div>
+            </div>
+          </div>
+        </div>
                     </Card>
                   </Link>
                 ))}
-              </div>
+      </div>
             )}
           </div>
         </div>

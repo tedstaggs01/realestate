@@ -15,7 +15,8 @@ import {
   Home,
   DollarSign,
   Clock,
-  Star
+  Star,
+  Building
 } from 'lucide-react'
 
 export default function AboutPage() {
@@ -274,8 +275,8 @@ export default function AboutPage() {
               <h3 className="text-2xl font-bold text-slate-800 mb-6">Market Impact</h3>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">90%</div>
-                  <div className="text-sm text-slate-600">Cost Reduction</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">€15,000+</div>
+                  <div className="text-sm text-slate-600">Average Commission Savings</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600 mb-2">75%</div>
@@ -283,13 +284,280 @@ export default function AboutPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-purple-600 mb-2">100%</div>
-                  <div className="text-sm text-slate-600">Transparency</div>
+                  <div className="text-sm text-slate-600">Price Transparency</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-orange-600 mb-2">24/7</div>
-                  <div className="text-sm text-slate-600">Availability</div>
+                  <div className="text-sm text-slate-600">Platform Availability</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Detailed Savings Statistics */}
+      <section className="py-16 bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-green-100 text-green-800">Real Savings</Badge>
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+              See How Much You Can Save
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              Traditional real estate agents charge hefty commissions. Our platform eliminates these costs, 
+              putting thousands back in your pocket.
+            </p>
+          </div>
+
+          {/* Commission Comparison */}
+          <div className="grid lg:grid-cols-2 gap-8 mb-12">
+            <Card className="border-0 shadow-lg bg-white">
+              <CardHeader className="text-center pb-2">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <DollarSign className="h-8 w-8 text-red-600" />
+                </div>
+                <CardTitle className="text-red-600">Traditional Agent Fees</CardTitle>
+                <CardDescription>What you typically pay with agents</CardDescription>
+              </CardHeader>
+              <div className="px-6 pb-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">€500,000 Property Sale</span>
+                    <span className="font-semibold">€500,000</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Agent Commission (3-6%)</span>
+                    <span className="font-semibold text-red-600">€15,000 - €30,000</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Marketing Fees</span>
+                    <span className="font-semibold text-red-600">€2,000 - €5,000</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Administrative Costs</span>
+                    <span className="font-semibold text-red-600">€1,000 - €3,000</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 bg-red-50 px-3 rounded-lg">
+                    <span className="font-bold text-slate-800">Total Agent Costs</span>
+                    <span className="font-bold text-red-600 text-lg">€18,000 - €38,000</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="border-0 shadow-lg bg-white">
+              <CardHeader className="text-center pb-2">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingDown className="h-8 w-8 text-green-600" />
+                </div>
+                <CardTitle className="text-green-600">Our Platform Fees</CardTitle>
+                <CardDescription>What you pay with our direct platform</CardDescription>
+              </CardHeader>
+              <div className="px-6 pb-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">€500,000 Property Sale</span>
+                    <span className="font-semibold">€500,000</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Platform Fee (0.5%)</span>
+                    <span className="font-semibold text-green-600">€2,500</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Professional Photography</span>
+                    <span className="font-semibold text-green-600">€300 - €500</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Legal Support (Optional)</span>
+                    <span className="font-semibold text-green-600">€500 - €1,000</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 bg-green-50 px-3 rounded-lg">
+                    <span className="font-bold text-slate-800">Total Platform Costs</span>
+                    <span className="font-bold text-green-600 text-lg">€3,300 - €4,000</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Savings Highlight */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-green-600 to-blue-600 text-white max-w-2xl mx-auto">
+              <div className="p-8">
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <Star className="h-8 w-8" />
+                  <h3 className="text-2xl font-bold">Your Total Savings</h3>
+                  <Star className="h-8 w-8" />
+                </div>
+                <div className="text-5xl font-bold mb-2">€14,000 - €34,000</div>
+                <p className="text-green-100 text-lg mb-4">On a typical €500,000 property transaction</p>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="font-semibold">Up to 90% savings</div>
+                    <div className="text-green-100">vs traditional agents</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Direct ownership</div>
+                    <div className="text-green-100">No middleman fees</div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Additional Benefits Statistics */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-blue-100 text-blue-800">Platform Benefits</Badge>
+            <h2 className="text-3xl font-bold text-slate-800 mb-4">
+              Beyond Just Savings
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              Our platform delivers value in multiple ways, from time savings to better market insights.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Clock className="h-10 w-10 text-blue-600" />
+              </div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">3-4 weeks</div>
+              <div className="text-sm text-slate-600 mb-2">Average time to close</div>
+              <div className="text-xs text-slate-500">vs 8-12 weeks traditional</div>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-10 w-10 text-green-600" />
+              </div>
+              <div className="text-3xl font-bold text-green-600 mb-2">2,500+</div>
+              <div className="text-sm text-slate-600 mb-2">Active users</div>
+              <div className="text-xs text-slate-500">Growing community</div>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="h-10 w-10 text-purple-600" />
+              </div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">&lt; 2 hours</div>
+              <div className="text-sm text-slate-600 mb-2">Response time</div>
+              <div className="text-xs text-slate-500">Direct owner contact</div>
+            </div>
+
+            <div className="text-center">
+              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-10 w-10 text-orange-600" />
+              </div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">98%</div>
+              <div className="text-sm text-slate-600 mb-2">Success rate</div>
+              <div className="text-xs text-slate-500">Completed transactions</div>
+            </div>
+          </div>
+
+          {/* Real Customer Examples */}
+          <div className="mt-16">
+            <h3 className="text-2xl font-bold text-slate-800 text-center mb-8">Real Customer Savings</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="border-0 shadow-lg">
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <Home className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Apartment Sale</div>
+                      <div className="text-sm text-slate-600">Gasperich, Luxembourg</div>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Property Value:</span>
+                      <span className="font-semibold">€650,000</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Traditional Agent Cost:</span>
+                      <span className="text-red-600">€19,500 - €39,000</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Our Platform Cost:</span>
+                      <span className="text-green-600">€3,750</span>
+                    </div>
+                    <div className="flex justify-between font-bold pt-2 border-t">
+                      <span>Total Saved:</span>
+                      <span className="text-green-600">€15,750 - €35,250</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="border-0 shadow-lg">
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <Building className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Studio Rental</div>
+                      <div className="text-sm text-slate-600">Gare, Luxembourg</div>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Monthly Rent:</span>
+                      <span className="font-semibold">€1,550</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Agent Finder Fee:</span>
+                      <span className="text-red-600">€1,550 - €3,100</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Our Platform Fee:</span>
+                      <span className="text-green-600">€0</span>
+                    </div>
+                    <div className="flex justify-between font-bold pt-2 border-t">
+                      <span>Total Saved:</span>
+                      <span className="text-green-600">€1,550 - €3,100</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="border-0 shadow-lg">
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                      <Star className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold">Luxury Penthouse</div>
+                      <div className="text-sm text-slate-600">Kirchberg, Luxembourg</div>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Property Value:</span>
+                      <span className="font-semibold">€1,200,000</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Traditional Agent Cost:</span>
+                      <span className="text-red-600">€36,000 - €72,000</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Our Platform Cost:</span>
+                      <span className="text-green-600">€6,500</span>
+                    </div>
+                    <div className="flex justify-between font-bold pt-2 border-t">
+                      <span>Total Saved:</span>
+                      <span className="text-green-600">€29,500 - €65,500</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         </div>
