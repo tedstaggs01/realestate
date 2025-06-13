@@ -6,8 +6,6 @@ import { Badge } from '@/components/ui/badge'
 import {
   Building,
   FileText,
-  Users,
-  TrendingUp,
   Calendar,
   MessageSquare,
   Plus,
@@ -15,7 +13,6 @@ import {
   ArrowDownRight,
   Eye,
   Heart,
-  MapPin,
   Euro
 } from 'lucide-react'
 
