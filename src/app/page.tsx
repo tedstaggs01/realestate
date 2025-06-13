@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import Image from "next/image"
@@ -187,7 +187,7 @@ export default function HomePage() {
   }, [isMapView])
 
   // Cleanup function to define updateMapMarkers outside useEffect
-  const updateMapMarkers = (mapInstance: mapboxgl.Map) => {
+  const updateMapMarkers = useCallback((mapInstance: mapboxgl.Map) => {
     if (!mapInstance) return
 
     // Clear existing markers
@@ -359,14 +359,21 @@ export default function HomePage() {
         setShowMobilePropertyDetails(true)
       })
     })
-  }
+  }, [filteredProperties, setSelectedProperty, setShowMobilePropertyDetails])
 
   // Update map markers when filtered properties change
   useEffect(() => {
     // Update both desktop and mobile maps
     if (map.current) updateMapMarkers(map.current)
     if (mobileMap.current) updateMapMarkers(mobileMap.current)
-  }, [filteredProperties])
+  }, [filteredProperties, updateMapMarkers])
+
+  // Update markers when switching to map view
+  useEffect(() => {
+    if (isMapView && map.current) {
+      updateMapMarkers(map.current)
+    }
+  }, [isMapView, updateMapMarkers])
 
   // Close language dropdown when clicking outside
   useEffect(() => {
