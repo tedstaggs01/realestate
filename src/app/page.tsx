@@ -201,6 +201,8 @@ export default function HomePage() {
         justify-content: center;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         transition: transform 0.2s ease;
+        transform-origin: center;
+        position: relative;
       `
       
       const icon = document.createElement('div')
@@ -208,14 +210,100 @@ export default function HomePage() {
       icon.style.fontSize = '16px'
       markerElement.appendChild(icon)
 
-      markerElement.addEventListener('mouseenter', () => {
-        markerElement.style.transform = 'scale(1.1)'
-      })
-      markerElement.addEventListener('mouseleave', () => {
-        markerElement.style.transform = 'scale(1)'
-      })
+      // Create hover popup
+      const hoverPopup = document.createElement('div')
+      hoverPopup.className = 'hover-popup'
+      hoverPopup.style.cssText = `
+        position: absolute;
+        bottom: 55px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        padding: 0;
+        min-width: 280px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        pointer-events: auto;
+        border: 1px solid #e5e7eb;
+      `
 
-      const popupContent = `
+      hoverPopup.innerHTML = `
+        <div style="position: relative;">
+          <img 
+            src="${property.image}" 
+            alt="${property.title}"
+            style="width: 100%; height: 120px; object-fit: cover; border-radius: 12px 12px 0 0;"
+          />
+          <div style="position: absolute; top: 8px; right: 8px;">
+            <span style="
+              background: ${property.category === 'sale' ? '#10b981' : '#3b82f6'};
+              color: white;
+              padding: 4px 8px;
+              border-radius: 6px;
+              font-size: 11px;
+              font-weight: 600;
+            ">
+              ${property.category === 'sale' ? 'For Sale' : 'For Rent'}
+            </span>
+        </div>
+        </div>
+        <div style="padding: 12px;">
+          <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: bold; color: #1f2937; line-height: 1.3;">
+            ${property.title}
+          </h3>
+          <p style="margin: 0 0 8px 0; font-size: 12px; color: #6b7280; line-height: 1.2;">
+            📍 ${property.address}
+          </p>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="font-size: 16px; font-weight: bold; color: ${property.category === 'sale' ? '#10b981' : '#3b82f6'};">
+              €${property.price.toLocaleString()}${property.category === 'rent' ? '/mo' : ''}
+              </div>
+            <div style="display: flex; gap: 8px; font-size: 11px; color: #6b7280;">
+              <span>🛏️ ${property.bedrooms}</span>
+              <span>🚿 ${property.bathrooms}</span>
+              <span>📐 ${property.area}m²</span>
+            </div>
+          </div>
+        </div>
+      `
+
+      markerElement.appendChild(hoverPopup)
+
+      let hoverTimeout: NodeJS.Timeout | null = null
+
+      // Hover events for the popup with improved handling
+      const showPopup = () => {
+        if (hoverTimeout) {
+          clearTimeout(hoverTimeout)
+          hoverTimeout = null
+        }
+        markerElement.style.transform = 'scale(1.1)'
+        hoverPopup.style.opacity = '1'
+        hoverPopup.style.visibility = 'visible'
+      }
+
+      const hidePopup = () => {
+        hoverTimeout = setTimeout(() => {
+          markerElement.style.transform = 'scale(1)'
+          hoverPopup.style.opacity = '0'
+          hoverPopup.style.visibility = 'hidden'
+        }, 100) // Small delay to prevent flickering
+      }
+
+      // Mouse events for marker
+      markerElement.addEventListener('mouseenter', showPopup)
+      markerElement.addEventListener('mouseleave', hidePopup)
+
+      // Mouse events for popup to keep it visible when hovering over it
+      hoverPopup.addEventListener('mouseenter', showPopup)
+      hoverPopup.addEventListener('mouseleave', hidePopup)
+
+      // Click popup (existing functionality)
+      const clickPopupContent = `
         <div style="padding: 12px; min-width: 250px;">
           <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold; color: #1f2937;">
             ${property.title}
@@ -227,12 +315,12 @@ export default function HomePage() {
             <span style="font-size: 18px; font-weight: bold; color: ${property.category === 'sale' ? '#10b981' : '#3b82f6'};">
               €${property.price.toLocaleString()}${property.category === 'rent' ? '/month' : ''}
             </span>
-          </div>
+                        </div>
           <div style="display: flex; gap: 12px; margin-bottom: 12px; font-size: 12px; color: #6b7280;">
             <span>🛏️ ${property.bedrooms} bed</span>
             <span>🚿 ${property.bathrooms} bath</span>
             <span>📐 ${property.area}m²</span>
-          </div>
+                        </div>
           <a href="${property.link}" style="
             display: inline-block;
             background: ${property.category === 'sale' ? '#10b981' : '#3b82f6'};
@@ -243,18 +331,18 @@ export default function HomePage() {
             font-size: 12px;
             font-weight: 500;
           ">View Details</a>
-        </div>
+                        </div>
       `
 
-      const popup = new mapboxgl.Popup({
+      const clickPopup = new mapboxgl.Popup({
         offset: 25,
         closeButton: true,
         closeOnClick: false
-      }).setHTML(popupContent)
+      }).setHTML(clickPopupContent)
 
       new mapboxgl.Marker(markerElement)
         .setLngLat(property.coordinates)
-        .setPopup(popup)
+        .setPopup(clickPopup)
         .addTo(mapInstance)
 
       markerElement.addEventListener('click', () => {
@@ -280,6 +368,12 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-3">
             <h1 className="text-xl font-bold text-slate-800">Luxembourg Real Estate</h1>
             <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/login">Login</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/register">Sign Up</Link>
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
@@ -289,8 +383,8 @@ export default function HomePage() {
                 <Filter className="h-4 w-4" />
                 Filters
               </Button>
-            </div>
-          </div>
+                    </div>
+                  </div>
 
           {/* Mobile Search */}
           <div className="relative mb-3">
@@ -301,7 +395,7 @@ export default function HomePage() {
               value={searchQuery}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
             />
-          </div>
+                      </div>
 
           {/* Mobile Category Toggle */}
           <div className="flex bg-slate-100 rounded-lg p-1 mb-3">
@@ -323,7 +417,7 @@ export default function HomePage() {
             >
               All
             </button>
-          </div>
+                    </div>
 
           {/* Map/List Toggle */}
           <div className="flex bg-slate-100 rounded-lg p-1">
@@ -339,13 +433,13 @@ export default function HomePage() {
             >
               Map
             </button>
-          </div>
+                </div>
 
           {/* Results Count */}
           <div className="text-center text-sm text-slate-600 mt-2">
             {filteredProperties.length} properties found
-          </div>
-        </div>
+                     </div>
+                   </div>
 
         {/* Mobile Filters Panel */}
         {showFilters && (
@@ -355,7 +449,7 @@ export default function HomePage() {
               <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
                 <X className="h-4 w-4" />
               </Button>
-            </div>
+                     </div>
             
             <div className="grid grid-cols-1 gap-4">
               <div>
@@ -380,7 +474,7 @@ export default function HomePage() {
                     </>
                   )}
                 </select>
-              </div>
+                 </div>
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Property Type</label>
@@ -395,8 +489,8 @@ export default function HomePage() {
                   <option value="penthouse">Penthouse</option>
                   <option value="house">House</option>
                 </select>
-              </div>
-            </div>
+                      </div>
+                      </div>
 
             <div className="flex gap-2 pt-2">
               <Button 
@@ -419,19 +513,32 @@ export default function HomePage() {
               >
                 Apply
               </Button>
-            </div>
-          </div>
+                      </div>
+                      </div>
         )}
-      </div>
-
+                  </div>
+                  
       {/* Desktop Header */}
       <div className="hidden lg:block bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-6">
+          {/* Top Bar with Brand and Auth Buttons */}
+          <div className="flex items-center justify-between mb-6">
+            <div></div>
+                      <div className="flex items-center gap-3">
+              <Button variant="ghost" asChild>
+                <Link href="/login">Login</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/register">Sign Up</Link>
+              </Button>
+                      </div>
+                      </div>
+
           {/* Brand Header */}
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-slate-800 mb-2">Luxembourg Real Estate</h1>
             <p className="text-slate-600">Find your perfect property with our interactive map search</p>
-          </div>
+                </div>
 
           {/* Main Search Bar */}
           <div className="mb-6">
@@ -443,8 +550,8 @@ export default function HomePage() {
                 value={searchQuery}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
               />
-            </div>
-          </div>
+                    </div>
+                  </div>
 
           {/* Filter Controls */}
           <div className="flex flex-wrap gap-4 items-center justify-center">
@@ -468,7 +575,7 @@ export default function HomePage() {
               >
                 All
               </button>
-            </div>
+                </div>
 
             {/* Price Range */}
             <select 
@@ -508,11 +615,11 @@ export default function HomePage() {
             {/* Results Count */}
             <div className="text-slate-600 text-sm">
               {filteredProperties.length} properties found
-            </div>
-          </div>
-        </div>
-      </div>
-
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  
       {/* Mobile Content */}
       <div className="lg:hidden">
         {isMapView ? (
@@ -529,13 +636,13 @@ export default function HomePage() {
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                   <span>Rent</span>
-                </div>
+                      </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   <span>Sale</span>
-                </div>
-              </div>
-            </div>
+                      </div>
+                      </div>
+                      </div>
 
             {/* Mobile Property Details Bottom Sheet */}
             {showMobilePropertyDetails && selectedProperty && (
@@ -550,14 +657,14 @@ export default function HomePage() {
                     >
                       <X className="h-4 w-4" />
                     </Button>
-                  </div>
-                  
+                </div>
+                
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`text-xl font-bold ${selectedProperty.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
                       €{selectedProperty.price.toLocaleString()}
                     </span>
                     {selectedProperty.category === 'rent' && <span className="text-slate-600">/month</span>}
-                  </div>
+                </div>
 
                   <p className="text-slate-600 text-sm mb-3 flex items-center gap-1">
                     <MapPin className="h-3 w-3" />
@@ -568,7 +675,7 @@ export default function HomePage() {
                     <div className="flex items-center gap-1">
                       <Bed className="h-3 w-3" />
                       <span>{selectedProperty.bedrooms} bed</span>
-                    </div>
+                      </div>
                     <div className="flex items-center gap-1">
                       <Bath className="h-3 w-3" />
                       <span>{selectedProperty.bathrooms} bath</span>
@@ -576,9 +683,9 @@ export default function HomePage() {
                     <div className="flex items-center gap-1">
                       <Building className="h-3 w-3" />
                       <span>{selectedProperty.area}m²</span>
+                      </div>
                     </div>
-                  </div>
-
+                    
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" asChild>
                       <Link href={selectedProperty.link}>
@@ -590,11 +697,11 @@ export default function HomePage() {
                         Contact
                       </a>
                     </Button>
-                  </div>
-                </div>
-              </div>
+                        </div>
+                        </div>
+                        </div>
             )}
-          </div>
+                        </div>
         ) : (
           /* Mobile List View */
           <div className="overflow-y-auto">
@@ -603,10 +710,10 @@ export default function HomePage() {
                 <div className="text-center py-12">
                   <div className="text-slate-400 mb-4">
                     <Filter className="h-12 w-12 mx-auto" />
-                  </div>
+                        </div>
                   <h3 className="text-lg font-semibold text-slate-600 mb-2">No properties found</h3>
                   <p className="text-slate-500">Try adjusting your search criteria or filters</p>
-                </div>
+                      </div>
               ) : (
                 filteredProperties.map((property) => (
                   <Card 
@@ -631,7 +738,7 @@ export default function HomePage() {
                           >
                             {property.status}
                           </Badge>
-                        </div>
+                    </div>
                         <div className="absolute top-3 right-3">
                           <Badge 
                             variant="secondary"
@@ -639,8 +746,8 @@ export default function HomePage() {
                           >
                             {property.category === 'sale' ? 'For Sale' : 'For Rent'}
                           </Badge>
-                        </div>
-                      </div>
+                  </div>
+                    </div>
                       
                       {/* Property Details */}
                       <CardContent className="p-4">
@@ -650,60 +757,60 @@ export default function HomePage() {
                             <MapPin className="h-3 w-3" />
                             {property.address}
                           </p>
-                        </div>
-                        
+          </div>
+
                         <div className="flex items-center gap-2 mb-3">
                           <span className={`text-2xl font-bold ${property.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
                             €{property.price.toLocaleString()}
                           </span>
                           {property.category === 'rent' && <span className="text-slate-600">/month</span>}
-                        </div>
-                        
+                </div>
+                
                         <div className="grid grid-cols-4 gap-2 mb-3 text-sm">
                           <div className="flex items-center gap-1">
                             <Bed className="h-3 w-3" />
                             <span>{property.bedrooms}</span>
-                          </div>
+                  </div>
                           <div className="flex items-center gap-1">
                             <Bath className="h-3 w-3" />
                             <span>{property.bathrooms}</span>
-                          </div>
+                  </div>
                           <div className="flex items-center gap-1">
                             <Building className="h-3 w-3" />
                             <span>{property.area}m²</span>
-                          </div>
+                  </div>
                           <div className="text-xs text-slate-500">
                             {property.energyClass}
-                          </div>
-                        </div>
-                        
+                  </div>
+                </div>
+                
                         <div className="flex flex-wrap gap-1 mb-3">
                           {property.features.slice(0, 2).map((feature, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
                               {feature}
                             </Badge>
                           ))}
-                        </div>
-                        
+                </div>
+                
                         <div className="flex gap-2">
                           <Button size="sm" className="flex-1" asChild>
                             <Link href={property.link}>
                               View Details
                             </Link>
-                          </Button>
+                </Button>
                           <Button size="sm" variant="outline" asChild>
                             <a href="mailto:Ted@staggs.lu">
                               Contact
-                            </a>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </div>
-                  </Card>
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+                </div>
+            </Card>
                 ))
               )}
-            </div>
           </div>
+        </div>
         )}
       </div>
 
@@ -722,121 +829,92 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
                 <span>For Rent</span>
-              </div>
+                  </div>
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-green-500 rounded-full"></div>
                 <span>For Sale</span>
+                </div>
               </div>
-            </div>
+                  </div>
           </div>
-        </div>
 
         {/* Listings Section - 50% */}
         <div className="w-1/2 overflow-y-auto bg-slate-50">
-          <div className="p-6 space-y-4">
+          <div className="p-6">
             {filteredProperties.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-slate-400 mb-4">
                   <Filter className="h-12 w-12 mx-auto" />
-                </div>
+            </div>
                 <h3 className="text-lg font-semibold text-slate-600 mb-2">No properties found</h3>
                 <p className="text-slate-500">Try adjusting your search criteria or filters</p>
-              </div>
+            </div>
             ) : (
-              filteredProperties.map((property) => (
-                <Card 
-                  key={property.id} 
-                  className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                    selectedProperty?.id === property.id ? 'ring-2 ring-blue-500 shadow-lg' : ''
-                  }`}
-                  onClick={() => setSelectedProperty(property)}
-                >
-                  <div className="flex">
-                    {/* Property Image */}
-                    <div className="relative w-48 h-32 flex-shrink-0">
-                      <Image
-                        src={property.image}
-                        alt={property.title}
-                        fill
-                        className="object-cover rounded-l-lg"
-                      />
-                      <div className="absolute top-2 left-2">
-                        <Badge 
-                          variant={property.status === 'Available' ? 'default' : 'destructive'}
-                          className={property.status === 'Available' ? 'bg-green-600' : 'bg-red-600'}
-                        >
-                          {property.status}
-                        </Badge>
-                      </div>
-                      <div className="absolute top-2 right-2">
-                        <Badge 
-                          variant="secondary"
-                          className={property.category === 'sale' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}
-                        >
-                          {property.category === 'sale' ? 'For Sale' : 'For Rent'}
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    {/* Property Details */}
-                    <CardContent className="flex-1 p-4">
-                      <div className="mb-2">
-                        <h3 className="font-bold text-lg mb-1">{property.title}</h3>
-                        <p className="text-slate-600 text-sm flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {property.address}
-                        </p>
-                      </div>
-                      
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className={`text-2xl font-bold ${property.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
-                          €{property.price.toLocaleString()}
-                        </span>
-                        {property.category === 'rent' && <span className="text-slate-600">/month</span>}
-                      </div>
-                      
-                      <div className="grid grid-cols-4 gap-2 mb-3 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Bed className="h-3 w-3" />
-                          <span>{property.bedrooms}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Bath className="h-3 w-3" />
-                          <span>{property.bathrooms}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Building className="h-3 w-3" />
-                          <span>{property.area}m²</span>
-                        </div>
-                        <div className="text-xs text-slate-500">
-                          {property.energyClass}
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {property.features.slice(0, 3).map((feature, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">
-                            {feature}
-                          </Badge>
-                        ))}
-                      </div>
-                      
-                      <div className="flex gap-2">
-                        <Button size="sm" className="flex-1" asChild>
-                          <Link href={property.link}>
-                            View Details
-                          </Link>
-                        </Button>
-                        <Button size="sm" variant="outline" asChild>
-                          <a href="mailto:Ted@staggs.lu">
-                            Contact
-                          </a>
-                        </Button>
-                      </div>
-                    </CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                {filteredProperties.map((property) => (
+                  <Link key={property.id} href={property.link}>
+                    <Card 
+                      className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
+                        selectedProperty?.id === property.id ? 'ring-2 ring-blue-500 shadow-lg' : ''
+                      }`}
+                      onClick={() => setSelectedProperty(property)}
+                    >
+                      <div>
+                        {/* Property Image */}
+                        <div className="relative w-full h-24">
+              <Image
+                            src={property.image}
+                            alt={property.title}
+                            fill
+                            className="object-cover rounded-t-lg"
+                          />
+                          <div className="absolute top-1 right-1">
+                            <Badge 
+                              variant="secondary"
+                              className={`text-xs ${property.category === 'sale' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}
+                            >
+                              {property.category === 'sale' ? 'Sale' : 'Rent'}
+                            </Badge>
                   </div>
-                </Card>
-              ))
+                </div>
+                
+                        {/* Property Details */}
+                        <div className="p-2">
+                          <div className="mb-1">
+                            <h3 className="font-bold text-xs mb-1 line-clamp-1">{property.title}</h3>
+                            <p className="text-slate-600 text-xs flex items-center gap-1 line-clamp-1">
+                              <MapPin className="h-2 w-2 flex-shrink-0" />
+                              {property.address}
+                            </p>
+                  </div>
+                          
+                          <div className="flex items-center justify-between mb-1">
+                            <span className={`text-sm font-bold ${property.category === 'sale' ? 'text-green-600' : 'text-blue-600'}`}>
+                              €{property.price.toLocaleString()}
+                            </span>
+                            {property.category === 'rent' && <span className="text-slate-600 text-xs">/mo</span>}
+            </div>
+            
+                          <div className="grid grid-cols-3 gap-1 text-xs">
+                            <div className="flex items-center gap-1">
+                              <Bed className="h-2 w-2" />
+                              <span>{property.bedrooms}</span>
+              </div>
+                            <div className="flex items-center gap-1">
+                              <Bath className="h-2 w-2" />
+                              <span>{property.bathrooms}</span>
+            </div>
+                            <div className="flex items-center gap-1">
+                              <Building className="h-2 w-2" />
+                              <span>{property.area}m²</span>
+              </div>
+            </div>
+          </div>
+        </div>
+                    </Card>
+                  </Link>
+                ))}
+      </div>
             )}
           </div>
         </div>
@@ -846,4 +924,4 @@ export default function HomePage() {
       <Footer />
     </div>
   )
-} 
+}
