@@ -275,12 +275,12 @@ export default function AboutPage() {
               <h3 className="text-2xl font-bold text-slate-800 mb-6">Market Impact</h3>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">€15,000+</div>
-                  <div className="text-sm text-slate-600">Average Commission Savings</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">€19.99</div>
+                  <div className="text-sm text-slate-600">Monthly Subscription</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-2">75%</div>
-                  <div className="text-sm text-slate-600">Faster Transactions</div>
+                  <div className="text-3xl font-bold text-green-600 mb-2">€20,000+</div>
+                  <div className="text-sm text-slate-600">Average Savings vs Agents</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-purple-600 mb-2">100%</div>
@@ -288,7 +288,7 @@ export default function AboutPage() {
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-orange-600 mb-2">24/7</div>
-                  <div className="text-sm text-slate-600">Platform Availability</div>
+                  <div className="text-sm text-slate-600">Platform Access</div>
                 </div>
               </div>
             </div>
@@ -352,7 +352,7 @@ export default function AboutPage() {
                   <TrendingDown className="h-8 w-8 text-green-600" />
                 </div>
                 <CardTitle className="text-green-600">Our Platform Fees</CardTitle>
-                <CardDescription>What you pay with our direct platform</CardDescription>
+                <CardDescription>What you pay with our subscription platform</CardDescription>
               </CardHeader>
               <div className="px-6 pb-6">
                 <div className="space-y-4">
@@ -361,20 +361,24 @@ export default function AboutPage() {
                     <span className="font-semibold">€500,000</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-slate-100">
-                    <span className="text-slate-600">Platform Fee (0.5%)</span>
-                    <span className="font-semibold text-green-600">€2,500</span>
+                    <span className="text-slate-600">Monthly Subscription (3 months avg.)</span>
+                    <span className="font-semibold text-green-600">€59.97</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-slate-100">
-                    <span className="text-slate-600">Professional Photography</span>
-                    <span className="font-semibold text-green-600">€300 - €500</span>
+                    <span className="text-slate-600">Professional Photography (Upsell)</span>
+                    <span className="font-semibold text-green-600">€299</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-slate-100">
-                    <span className="text-slate-600">Legal Support (Optional)</span>
-                    <span className="font-semibold text-green-600">€500 - €1,000</span>
+                    <span className="text-slate-600">Premium Listing (Upsell)</span>
+                    <span className="font-semibold text-green-600">€99</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <span className="text-slate-600">Legal Support (Upsell)</span>
+                    <span className="font-semibold text-green-600">€499</span>
                   </div>
                   <div className="flex justify-between items-center py-3 bg-green-50 px-3 rounded-lg">
                     <span className="font-bold text-slate-800">Total Platform Costs</span>
-                    <span className="font-bold text-green-600 text-lg">€3,300 - €4,000</span>
+                    <span className="font-bold text-green-600 text-lg">€956.97</span>
                   </div>
                 </div>
               </div>
@@ -390,16 +394,16 @@ export default function AboutPage() {
                   <h3 className="text-2xl font-bold">Your Total Savings</h3>
                   <Star className="h-8 w-8" />
                 </div>
-                <div className="text-5xl font-bold mb-2">€14,000 - €34,000</div>
+                <div className="text-5xl font-bold mb-2">€17,000 - €37,000</div>
                 <p className="text-green-100 text-lg mb-4">On a typical €500,000 property transaction</p>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <div className="font-semibold">Up to 90% savings</div>
+                    <div className="font-semibold">Up to 97% savings</div>
                     <div className="text-green-100">vs traditional agents</div>
                   </div>
                   <div>
-                    <div className="font-semibold">Direct ownership</div>
-                    <div className="text-green-100">No middleman fees</div>
+                    <div className="font-semibold">Subscription model</div>
+                    <div className="text-green-100">€19.99/month only</div>
                   </div>
                 </div>
               </div>
@@ -485,11 +489,11 @@ export default function AboutPage() {
                     </div>
                     <div className="flex justify-between">
                       <span>Our Platform Cost:</span>
-                      <span className="text-green-600">€3,750</span>
+                      <span className="text-green-600">€957</span>
                     </div>
                     <div className="flex justify-between font-bold pt-2 border-t">
                       <span>Total Saved:</span>
-                      <span className="text-green-600">€15,750 - €35,250</span>
+                      <span className="text-green-600">€18,543 - €38,043</span>
                     </div>
                   </div>
                 </div>
@@ -516,12 +520,12 @@ export default function AboutPage() {
                       <span className="text-red-600">€1,550 - €3,100</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Our Platform Fee:</span>
-                      <span className="text-green-600">€0</span>
+                      <span>Our Platform Cost:</span>
+                      <span className="text-green-600">€19.99/month</span>
                     </div>
                     <div className="flex justify-between font-bold pt-2 border-t">
                       <span>Total Saved:</span>
-                      <span className="text-green-600">€1,550 - €3,100</span>
+                      <span className="text-green-600">€1,530 - €3,080</span>
                     </div>
                   </div>
                 </div>
@@ -549,11 +553,11 @@ export default function AboutPage() {
                     </div>
                     <div className="flex justify-between">
                       <span>Our Platform Cost:</span>
-                      <span className="text-green-600">€6,500</span>
+                      <span className="text-green-600">€1,157</span>
                     </div>
                     <div className="flex justify-between font-bold pt-2 border-t">
                       <span>Total Saved:</span>
-                      <span className="text-green-600">€29,500 - €65,500</span>
+                      <span className="text-green-600">€34,843 - €70,843</span>
                     </div>
                   </div>
                 </div>
